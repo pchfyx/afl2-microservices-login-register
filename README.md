@@ -1,8 +1,5 @@
 # AFL-2 Microservices Development - All About Docker Desktop
 
-**Name:** Ezekiel Philemon  
-**NIM:** 0706012314002  
-**Course:** Microservices Development  
 
 ## Project Description
 
