@@ -1,0 +1,58 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: afl2_load_balancer
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web1
+      - web2
+    networks:
+      - afl2_network
+
+  web1:
+    build: ./app
+    container_name: afl2_web1
+    environment:
+      DB_HOST: db
+      DB_NAME: userdb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      - db
+    networks:
+      - afl2_network
+
+  web2:
+    build: ./app
+    container_name: afl2_web2
+    environment:
+      DB_HOST: db
+      DB_NAME: userdb
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      - db
+    networks:
+      - afl2_network
+
+  db:
+    image: postgres:15
+    container_name: afl2_database
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - afl2_network
+
+volumes:
+  postgres_data:
+
+networks:
+  afl2_network:
+    driver: bridge
